@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import NextAuthSessionProvider from "@/components/SessionProvider";
 import ThemeProvider from "@/components/ThemeProvider";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +20,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body
+        className={` ${inter.className} grid place-items-center transition-all`}
+      >
         <NextAuthSessionProvider>
           <ThemeProvider
             attribute="class"
@@ -26,7 +30,11 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <main className="max-w-screen-2xl md:min-w-[1280px] ">
+              <Navbar />
+              {children}
+              <Footer />
+            </main>
           </ThemeProvider>
         </NextAuthSessionProvider>
       </body>
