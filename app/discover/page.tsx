@@ -17,7 +17,7 @@ const Discover = () => {
       <div className="w-full flex justify-between items-center">
         <h3 className="font-bold text-xl">Courses</h3>
         <div className="flex gap-4 items-center">
-          <Input />
+          <Input placeholder="Search..." />
           <Button>Filters</Button>
         </div>
       </div>
