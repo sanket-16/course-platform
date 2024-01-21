@@ -34,14 +34,37 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model UserPurchasedCourse {
+  id          String   @id @default(cuid())
+  userId      String
+  courseId    String
+  purchasedAt DateTime @default(now())
+
+  user   User   @relation("purchasedUserId", fields: [userId], references: [id])
+  course Course @relation("purchasedCourseId", fields: [courseId], references: [id])
+}
+
+model Course {
+  id          String                @id @default(cuid())
+  title       String
+  description String
+  price       Float
+  image       String
+  author      User                  @relation(name: "CreatedCourses", fields: [authorId], references: [id])
+  authorId    String
+  purchasedBy UserPurchasedCourse[] @relation("purchasedCourseId")
+}
+
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
+  id                   String                @id @default(cuid())
+  name                 String?
+  email                String?               @unique
+  emailVerified        DateTime?
+  image                String?
+  accounts             Account[]
+  sessions             Session[]
+  userCreatedCourses   Course[]              @relation("CreatedCourses")
+  userPurchasedCourses UserPurchasedCourse[] @relation("purchasedUserId")
 }
 
 model VerificationToken {
