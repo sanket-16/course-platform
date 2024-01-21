@@ -44,15 +44,49 @@ model UserPurchasedCourse {
   course Course @relation("purchasedCourseId", fields: [courseId], references: [id])
 }
 
-model Course {
-  id          String                @id @default(cuid())
+model Category {
+  id          String @id @default(cuid())
   title       String
   description String
-  price       Float
-  image       String
-  author      User                  @relation(name: "CreatedCourses", fields: [authorId], references: [id])
-  authorId    String
-  purchasedBy UserPurchasedCourse[] @relation("purchasedCourseId")
+
+  Course   Course?       @relation(fields: [courseId], references: [id])
+  courseId String?
+  videos   CourseVideo[]
+}
+
+model CourseVideo {
+  id          String    @id @default(cuid())
+  title       String
+  description String
+  url         String
+  category    Category? @relation(fields: [categoryId], references: [id])
+  categoryId  String?
+}
+
+model Course {
+  id            String                @id @default(cuid())
+  title         String
+  description   String
+  price         Float
+  image         String
+  author        User                  @relation(name: "CreatedCourses", fields: [authorId], references: [id])
+  authorId      String
+  purchasedBy   UserPurchasedCourse[] @relation("purchasedCourseId")
+  Review        Review[]
+  averageRating Float                 @default(5)
+  categories    Category[]
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  rating    Int
+  comment   String
+  courseId  String
+  userId    String
+  createdAt DateTime @default(now())
+
+  course Course @relation(fields: [courseId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
 }
 
 model User {
@@ -65,6 +99,7 @@ model User {
   sessions             Session[]
   userCreatedCourses   Course[]              @relation("CreatedCourses")
   userPurchasedCourses UserPurchasedCourse[] @relation("purchasedUserId")
+  Review               Review[]
 }
 
 model VerificationToken {
