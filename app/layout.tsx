@@ -6,7 +6,11 @@ import ThemeProvider from "@/components/ThemeProvider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
+import QueryProvider from "@/components/QueryProvider";
+
+
 const inter = Inter({ subsets: ["latin"] });
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,6 +28,8 @@ export default function RootLayout({
         className={` ${inter.className} grid place-items-center transition-all`}
       >
         <NextAuthSessionProvider>
+        <QueryProvider>
+        
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -36,6 +42,8 @@ export default function RootLayout({
               <Footer />
             </main>
           </ThemeProvider>
+          </QueryProvider>
+          
         </NextAuthSessionProvider>
       </body>
     </html>
